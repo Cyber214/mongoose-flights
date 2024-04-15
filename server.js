@@ -1,9 +1,12 @@
 // import npm packages
+import "dotenv/config.js"
 import express from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import createError from 'http-errors'
 import logger from 'morgan'
+import "./config/datbase.js"
+import methodOverride from 'method-override'
 
 // import routers
 import { router as indexRouter } from './routes/index.js'
