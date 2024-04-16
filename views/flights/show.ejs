@@ -5,30 +5,30 @@
 <main>
   <h1><%= title %></h1>
   <section>
-    <div>Title: </div>
+    <div>Airline: </div>
     <div>
       <%= flight.airline %>
       <a href="/flights/<%= flight._id %>/edit">
-        <button>Edit flight</button>
+        <button>Edit Flight</button>
       </a>
     </div>
     <div>Airport: </div>
     <div><%= flight.airport %></div>
     <div>Flight Number: </div>
     <div><%= flight.flightNo %></div>
-    <div>Departure Day: </div>
+    <div>Departs: </div>
     <div><%= flight.departs %></div>
   </section>
   <h2>Tickets</h2>
   <form 
     id="add-review-form"
-    action="/flights/<%= movie._id %>/flights"
+    action="/flights/<%= flight._id %>/tickets"
     method="POST"
   >
     <label for="seat-input">Seat:</label>
     <input name="seat" required pattern="[A-F][1-9]\d?">
     <label for="price-input">Price:</label>
-    <input type="text" name="price" id="price-input">
+    <input type="number" name="price" id="price-input">
     <button type="submit">Add Ticket</button>
   </form>
 
@@ -36,17 +36,17 @@
     <table>
       <thead>
         <tr>
+          <th>Date</th>
           <th>Seat</th>
           <th>Price</th>
 					<th>Delete</th>
         </tr>
       </thead>
       <tbody>
-        <% flight.tickets.forEach(function(review) { %>
+        <% flight.tickets.forEach(function(ticket) { %>
           <tr>
             <td><%= ticket.createdAt.toLocaleDateString() %></td>
             <td><%= ticket.seat %></td>
-						<td>
             <td><%= ticket.price %></td>
 						<td>
               <form action="/flights/<%= flight._id %>/tickets/<%= ticket._id %>?_method=DELETE" method="POST">
@@ -61,7 +61,7 @@
       </tbody>
     </table>
   <% } else { %>
-    <h3>No Tickets Bought Yet</h3>
+    <h3> No Tickets Bought Yet! </h3>
   <% } %>
 </main>
   
