@@ -4,20 +4,14 @@ function newFlight(req, res) {
   res.render('flights/new', {
     title: 'Add Flight',
   })
-  const newFlight = new Flight()
-  // Obtain the default date
-  const dt = newFlight.departs
-  // Format the date for the value attribute of the input
-  const departsDate = dt.toISOString().slice(0, 16)
-  res.render('flights/new', {departsDate})
 }
 
 function create(req, res) {
-  // // remove empty properties on req.body
-  // for (let number in req.body) {
-  //   if (req.body[number] === '') delete req.body[number]
-  // }
-  // // use flight model to create flight
+  // remove empty properties on req.body
+  for (let key in req.body) {
+    if (req.body[key] === '') delete req.body[key]
+  }
+  // use flight model to create flight
   Flight.create(req.body)
   .then(flight => {
     // redirect somewhere
@@ -85,6 +79,29 @@ function edit(req, res) {
   })
 }
 
+function update(req, res) {
+  // checkbox logic
+  req.body.nowShowing = !!req.body.nowShowing
+  // handle splitting the cast string into an array
+  if (req.body.cast) {
+    req.body.cast = req.body.cast.split(', ')
+  }
+  // remove empty properties on req.body
+  for (let key in req.body) {
+    if (req.body[key] === '') delete req.body[key]
+  }
+  // use model to update database
+  Flight.findByIdAndUpdate(req.params.flightId, req.body, {new: true})
+  .then(flight => {
+    // redirect to show view
+    res.redirect(`/flights/${flight._id}`)
+  })
+  .catch(err => {
+    console.log(err)
+    res.redirect('/flights')
+  })
+}
+
 export {
   newFlight as new,
   create,
@@ -92,4 +109,5 @@ export {
   show,
   deleteFlight as delete,
   edit,
+  update,
 }

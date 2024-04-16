@@ -16,3 +16,6 @@ touch models/flight.js
 
 
 import methodOverride from 'method-override'
+
+
+flight = airline, airport, flight number, departs, tickets - seat, price.
