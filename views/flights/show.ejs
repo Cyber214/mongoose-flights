@@ -19,6 +19,50 @@
     <div>Departure Day: </div>
     <div><%= flight.departs %></div>
   </section>
+  <h2>Tickets</h2>
+  <form 
+    id="add-review-form"
+    action="/flights/<%= movie._id %>/flights"
+    method="POST"
+  >
+    <label for="seat-input">Seat:</label>
+    <input name="seat" required pattern="[A-F][1-9]\d?">
+    <label for="price-input">Price:</label>
+    <input type="text" name="price" id="price-input">
+    <button type="submit">Add Ticket</button>
+  </form>
+
+	<% if (flight.tickets.length) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Seat</th>
+          <th>Price</th>
+					<th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% flight.tickets.forEach(function(review) { %>
+          <tr>
+            <td><%= ticket.createdAt.toLocaleDateString() %></td>
+            <td><%= ticket.seat %></td>
+						<td>
+            <td><%= ticket.price %></td>
+						<td>
+              <form action="/flights/<%= flight._id %>/tickets/<%= ticket._id %>?_method=DELETE" method="POST">
+                <button>X</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+        <tr>
+          <td colspan="2"></td>
+        </tr>
+      </tbody>
+    </table>
+  <% } else { %>
+    <h3>No Tickets Bought Yet</h3>
+  <% } %>
 </main>
   
 <%- include('../partials/footer') %>
