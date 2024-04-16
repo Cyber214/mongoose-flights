@@ -18,6 +18,7 @@ const flightSchema = new Schema({
     max: 9999,
   },
   departs: {
+    type: Date,
     default: function() {
       let date = new Date()
       let defaultDate = date.setFullYear(new Date().getFullYear() + 1)
@@ -31,5 +32,5 @@ const flightSchema = new Schema({
 const Flight = mongoose.model('Flight', flightSchema)
 
 export {
-  Flight
+  Flight,
 }
