@@ -4,14 +4,20 @@ function newFlight(req, res) {
   res.render('flights/new', {
     title: 'Add Flight',
   })
+  const newFlight = new Flight()
+  // Obtain the default date
+  const dt = newFlight.departs
+  // Format the date for the value attribute of the input
+  const departsDate = dt.toISOString().slice(0, 16)
+  res.render('flights/new', {departsDate})
 }
 
 function create(req, res) {
-  // remove empty properties on req.body
-  for (let number in req.body) {
-    if (req.body[number] === '') delete req.body[number]
-  }
-  // use flight model to create flight
+  // // remove empty properties on req.body
+  // for (let number in req.body) {
+  //   if (req.body[number] === '') delete req.body[number]
+  // }
+  // // use flight model to create flight
   Flight.create(req.body)
   .then(flight => {
     // redirect somewhere
