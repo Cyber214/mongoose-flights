@@ -10,6 +10,7 @@
         <th>Airline</th>
         <th>Airport</th>
         <th>Flight Details</th>
+        <th>Departure</th>
         <th>Delete</th>
       </tr>
     </thead>
@@ -19,6 +20,7 @@
         <td><%= flight.airline %></td>
         <td><%= flight.airport %></td>
         <td><a href="/flights/<%= flight._id %>">DETAILS</a></td>
+        <td><%= flight.departs.toLocaleString('en-US', {month: 'numeric', day: 'numeric', year: '2-digit'}) %></td>
         <td>
           <form 
             action="/flights/<%= flight._id %>?_method=DELETE"

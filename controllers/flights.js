@@ -125,6 +125,29 @@ function createTicket(req, res) {
   })
 }
 
+function addToMeal(req, res) {
+  // find the flight by id
+  Flight.findById(req.params.flightId)
+  .then(flight => {
+    // associate performerId (in req.body) by adding to cast array
+    flight.cast.push(req.body.performerId)
+    // save the parent document
+    flight.save()
+    .then(() => {
+      // redirect back to flight show view
+      res.redirect(`/flights/${flight._id}`)
+    })
+    .catch(err => {
+      console.log(err)
+      res.redirect('/flights')
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    res.redirect('/flights')
+  })
+}
+
 export {
   newFlight as new,
   create,
@@ -134,4 +157,5 @@ export {
   edit,
   update,
   createTicket,
+  addToMeal,
 }
