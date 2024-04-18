@@ -1,4 +1,5 @@
 import { Flight } from "../models/flight.js"
+import { Meal } from "../models/meal.js"
 
 function newFlight(req, res) {
   res.render('flights/new', {
@@ -41,10 +42,16 @@ function index(req, res) {
 
 function show(req, res) {
   Flight.findById(req.params.flightId)
+  .populate('meals')
   .then(flight => {
-    res.render('flights/show', {
-      flight: flight,
-      title: 'Flight Detail'
+    // find the meals not already associated with the flight
+    Meal.find({_id: {$nin: flight.meals}})
+    .then(meals => {
+      res.render('flights/show', {
+        flight: flight,
+        title: 'flight Detail',
+        meals: meals
+      })
     })
   })
   .catch(err => {
@@ -82,9 +89,9 @@ function edit(req, res) {
 function update(req, res) {
   // checkbox logic
   req.body.nowShowing = !!req.body.nowShowing
-  // handle splitting the cast string into an array
-  if (req.body.cast) {
-    req.body.cast = req.body.cast.split(', ')
+  // handle splitting the meals string into an array
+  if (req.body.meals) {
+    req.body.meals = req.body.meals.split(', ')
   }
   // remove empty properties on req.body
   for (let key in req.body) {
@@ -129,8 +136,8 @@ function addToMeal(req, res) {
   // find the flight by id
   Flight.findById(req.params.flightId)
   .then(flight => {
-    // associate performerId (in req.body) by adding to cast array
-    flight.cast.push(req.body.performerId)
+    // associate mealId (in req.body) by adding to meal array
+    flight.meals.push(req.body.mealId)
     // save the parent document
     flight.save()
     .then(() => {
